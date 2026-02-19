@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAura } from "@/context/AuraContext";
+import TreeGrowth from "@/components/TreeGrowth";
 
 const stressLevels = [
   { level: 1, emoji: "😌", label: "Very Calm", color: "bg-aura-sage-light border-primary/30" },
@@ -15,9 +16,14 @@ const StressCheckIn = () => {
   const [submitted, setSubmitted] = useState(false);
   const streak = getStressStreak();
 
+  const [animateNow, setAnimateNow] = useState(false);
+
   const handleSubmit = () => {
     if (selected === null) return;
     addStressEntry(selected);
+    // trigger a quick animation on submit
+    setAnimateNow(true);
+    setTimeout(() => setAnimateNow(false), 1400);
     setSubmitted(true);
   };
 
@@ -26,6 +32,9 @@ const StressCheckIn = () => {
     return (
       <div className="rounded-2xl bg-card p-6 aura-card-glow border border-border animate-fade-in">
         <div className="text-center">
+          <div className="mx-auto w-28 mb-3">
+            <TreeGrowth level={selected ?? 3} animate={true} />
+          </div>
           <span className="text-4xl mb-3 block">{isHigh ? "💚" : "✨"}</span>
           <h3 className="font-display text-lg mb-2">Check-in recorded</h3>
           {isHigh ? (
@@ -55,22 +64,30 @@ const StressCheckIn = () => {
     <div className="rounded-2xl bg-card p-6 aura-card-glow border border-border">
       <h3 className="text-lg font-display mb-1">How's your shift going?</h3>
       <p className="text-sm text-muted-foreground mb-4">Quick 5-second stress check</p>
-      <div className="flex gap-2 justify-between mb-4">
-        {stressLevels.map((s) => (
-          <button
-            key={s.level}
-            onClick={() => setSelected(s.level)}
-            className={`flex flex-col items-center gap-1 rounded-xl border-2 px-2 py-3 transition-all duration-300 flex-1
-              ${selected === s.level
-                ? `${s.color} scale-105 shadow-md`
-                : "border-transparent hover:border-border hover:bg-muted/50"
-              }`}
-          >
-            <span className="text-xl sm:text-2xl">{s.emoji}</span>
-            <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">{s.label}</span>
-          </button>
-        ))}
+
+      <div className="flex gap-4 items-start mb-4">
+        <div className="w-28 shrink-0">
+          <TreeGrowth level={selected ?? 3} />
+        </div>
+
+        <div className="flex-1 grid grid-cols-2 gap-2">
+          {stressLevels.map((s) => (
+            <button
+              key={s.level}
+              onClick={() => setSelected(s.level)}
+              className={`flex flex-col items-center gap-1 rounded-xl border-2 px-2 py-3 transition-all duration-300
+                ${selected === s.level
+                  ? `${s.color} scale-105 shadow-md`
+                  : "border-transparent hover:border-border hover:bg-muted/50"
+                }`}
+            >
+              <span className="text-xl sm:text-2xl">{s.emoji}</span>
+              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">{s.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
+
       {selected !== null && (
         <button
           onClick={handleSubmit}

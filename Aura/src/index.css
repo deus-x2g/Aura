@@ -147,4 +147,37 @@
   .safe-area-bottom {
     padding-bottom: max(env(safe-area-inset-bottom, 0px), 0.5rem);
   }
+
+  /* Tree grow and sway animations */
+  @keyframes aura-grow {
+    0% { transform: scaleY(0.2); opacity: 0; }
+    60% { transform: scaleY(1.05); opacity: 1; }
+    100% { transform: scaleY(1); opacity: 1; }
+  }
+
+  @keyframes aura-sway {
+    0% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+    100% { transform: rotate(-1deg); }
+  }
+
+  .animate-sway {
+    transform-origin: 50% 80%;
+    animation: aura-sway 4s ease-in-out infinite;
+  }
+
+  .animate-grow-delay {
+    transform-origin: bottom center;
+    animation: aura-grow 700ms ease-out both;
+  }
+
+  @keyframes aura-bloom {
+    0% { transform: scale(0.92); opacity: 0.6; }
+    50% { transform: scale(1.08); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .animate-bloom {
+    animation: aura-bloom 700ms cubic-bezier(.22,.9,.42,1) both;
+  }
 }

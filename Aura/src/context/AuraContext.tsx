@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import lovable from "@/lib/lovableApi";
 
 export interface StressEntry {
   date: string;
@@ -86,20 +87,25 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
   const today = () => new Date().toISOString().split("T")[0];
 
   const addStressEntry = (level: number) => {
-    setData((d) => ({
-      ...d,
-      stressHistory: [...d.stressHistory, { date: today(), level, timestamp: Date.now() }],
-    }));
+    const entry = { date: today(), level, timestamp: Date.now() };
+    setData((d) => ({ ...d, stressHistory: [...d.stressHistory, entry] }));
+    // fire-and-forget persist
+    lovable.saveStressEntry({ level, ts: entry.timestamp }).catch(() => {});
   };
 
   const addIncident = (report: Omit<IncidentReport, "id" | "timestamp" | "status">) => {
-    setData((d) => ({
-      ...d,
-      incidents: [
-        ...d.incidents,
-        { ...report, id: crypto.randomUUID(), timestamp: Date.now(), status: "pending" as const },
-      ],
-    }));
+    const newReport = { ...report, id: crypto.randomUUID(), timestamp: Date.now(), status: "pending" as const };
+    setData((d) => ({ ...d, incidents: [...d.incidents, newReport] }));
+    // upload to backend stub
+    try {
+      const form = new FormData();
+      form.append("id", newReport.id);
+      form.append("description", newReport.description);
+      form.append("injuryType", newReport.injuryType);
+      lovable.uploadIncident(form).catch(() => {});
+    } catch (e) {
+      // ignore
+    }
   };
 
   const addEmotionScan = (result: EmotionScan["result"]) => {

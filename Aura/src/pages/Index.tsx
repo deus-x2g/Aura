@@ -1,4 +1,7 @@
 import heroImage from "@/assets/hero-wellness.jpg";
+import HeroIllustration from "@/components/HeroIllustration";
+import RiderBanner from "@/components/RiderBanner";
+import RiderSupport from "@/components/RiderSupport";
 import StressCheckIn from "@/components/StressCheckIn";
 import HabitCard from "@/components/HabitCard";
 import WellnessRing from "@/components/WellnessRing";
@@ -27,6 +30,9 @@ const Index = () => {
       {/* Hero */}
       <div className="relative h-52 overflow-hidden sm:h-64">
         <img src={heroImage} alt="Serene landscape" className="h-full w-full object-cover" />
+        <div className="absolute right-4 top-4 hidden md:block w-48 h-28">
+          <HeroIllustration className="w-full h-full" />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/50 to-background" />
         <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
           <div className="flex items-center gap-2 mb-1">
@@ -39,6 +45,9 @@ const Index = () => {
       </div>
 
       <div className="mx-auto max-w-lg px-4 -mt-1">
+        <div className="mb-3">
+          <RiderBanner />
+        </div>
         {/* High stress alert */}
         {streak >= 3 && (
           <Link to="/support" className="block mb-4 animate-fade-in">
@@ -81,6 +90,10 @@ const Index = () => {
         {/* Weekly summary */}
         <section className="mt-5 animate-fade-in [animation-delay:250ms] opacity-0">
           <WeeklySummary />
+        </section>
+
+        <section className="mt-4 animate-fade-in [animation-delay:270ms] opacity-0">
+          <RiderSupport />
         </section>
 
         {/* Breathing + Quote */}

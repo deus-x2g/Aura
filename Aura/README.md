@@ -60,6 +60,20 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## About Aura
+
+Aura is a privacy-first health & wellness app tailored for delivery riders. It focuses on mental wellbeing and physical safety without surveillance or forced actions. Key V1 features:
+
+- Mood tracker with quick daily check-ins
+- Wellness rings (water, sleep, steps, mindfulness)
+- Daily habits with streaks
+- Guided breathing exercise (4-4-6)
+- Incident reporting and emergency support
+
+Aura 2.0 (in-progress) adds rider-focused features, consent-based emotion checks, fatigue analysis, and a backend stub (Lovable Cloud) for persisting data while keeping privacy-first defaults.
+
+Design notes: Serene, organic aesthetic — sage greens, warm gold accents, `DM Serif Display` for headings and `DM Sans` for body copy.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
