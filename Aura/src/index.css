@@ -4,6 +4,30 @@
 @tailwind components;
 @tailwind utilities;
 
+  /* StressCheckIn component styles */
+  .stress-checkin { padding: 2rem; max-width: 800px; margin: 0 auto; }
+  .checkin-container { display:flex; gap:2rem; align-items:flex-start; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius:20px; padding:2rem; box-shadow:0 10px 30px rgba(0,0,0,0.1); }
+  .tree-display { flex:0 0 120px; display:flex; justify-content:center; align-items:center; min-height:200px; background:rgba(255,255,255,0.3); border-radius:60px; padding:1rem; }
+  .selection-interface { flex:1; }
+  .stress-buttons { display:flex; gap:1rem; margin:2rem 0; flex-wrap:wrap; }
+  .stress-btn { flex:1; min-width:80px; padding:1rem; border:none; border-radius:12px; background:white; cursor:pointer; transition:all 0.3s ease; display:flex; flex-direction:column; align-items:center; gap:0.5rem; box-shadow:0 4px 6px rgba(0,0,0,0.1); }
+  .stress-btn:hover { transform:translateY(-2px); box-shadow:0 6px 12px rgba(0,0,0,0.15); }
+  .stress-btn.selected { background:#4caf50; color:white; transform:scale(1.05); }
+  .level-number { font-size:1.5rem; font-weight:700; }
+  .level-label { font-size:0.9rem; }
+  .stress-level-1.selected { background:#8b5a2b; }
+  .stress-level-2.selected { background:#81c784; }
+  .stress-level-3.selected { background:#66bb6a; }
+  .stress-level-4.selected { background:#43a047; }
+  .stress-level-5.selected { background:#2e7d32; }
+  .submit-btn { padding:1rem 2rem; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:12px; font-size:1.1rem; cursor:pointer; transition:all 0.3s ease; width:100%; }
+  .submit-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 20px rgba(102,126,234,0.4); }
+  .submit-btn:disabled { opacity:0.5; cursor:not-allowed; }
+  .checkin-confirmation { margin-top:2rem; padding:1rem; background:rgba(255,255,255,0.9); border-radius:12px; animation: slideUp 0.5s ease; }
+  .tree-message { color:#2e7d32; font-style:italic; margin-top:0.5rem; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @media (max-width:600px) { .checkin-container { flex-direction:column; align-items:center; } .tree-display { width:100%; } .stress-buttons { justify-content:center; } .stress-btn { min-width:60px; } }
+
 @layer base {
   :root {
     --background: 80 25% 97%;
@@ -180,4 +204,136 @@
   .animate-bloom {
     animation: aura-bloom 700ms cubic-bezier(.22,.9,.42,1) both;
   }
+
+/* Tree Growth Animations and styles (advanced) */
+@keyframes aura-grow {
+  0% { transform: scaleY(0); opacity: 0; }
+  50% { transform: scaleY(1.02); }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes aura-sway {
+  0%, 100% { transform: rotate(0deg) translateX(0); }
+  25% { transform: rotate(0.5deg) translateX(1px); }
+  75% { transform: rotate(-0.5deg) translateX(-1px); }
+}
+
+@keyframes aura-bloom {
+  0% { filter: brightness(1) drop-shadow(0 0 0 rgba(255,215,0,0)); }
+  50% { filter: brightness(1.2) drop-shadow(0 0 8px rgba(255,215,0,0.6)); transform: scale(1.05); }
+  100% { filter: brightness(1) drop-shadow(0 0 0 rgba(255,215,0,0)); }
+}
+
+@keyframes float-particle {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-30px) rotate(180deg); opacity: 0; }
+}
+
+@keyframes dew-glisten {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 5px rgba(255,255,255,0.8); }
+}
+
+@keyframes leaf-rustle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  75% { transform: rotate(-2deg); }
+}
+
+@keyframes root-grow {
+  0% { transform: scaleY(0); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 0.6; }
+}
+
+.animate-sway { animation: aura-sway 4s ease-in-out infinite; transform-origin: center bottom; }
+.animate-bloom { animation: aura-bloom 1s ease-out forwards; }
+.animate-grow-delay { animation: aura-grow 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards; transform-origin: bottom; }
+
+/* Tree Growth Container */
+.tree-growth { display:flex; justify-content:center; align-items:flex-end; width:120px; height:160px; position:relative; }
+.tree-stage { position:relative; width:100%; height:100%; display:flex; justify-content:center; align-items:flex-end; transition: all 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+/* Stage 1: Seed */
+.seed-container { position:relative; width:40px; height:40px; margin-bottom:20px; }
+.seed { position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:24px; height:32px; background:linear-gradient(135deg,#8b5a2b,#5d3a1a); border-radius:50% 50% 40% 40%; box-shadow:0 4px 8px rgba(0,0,0,0.2); }
+.seed-shadow { position:absolute; bottom:-4px; left:50%; transform:translateX(-50%); width:30px; height:8px; background:rgba(0,0,0,0.2); border-radius:50%; filter:blur(2px); }
+.seed-highlight { position:absolute; top:6px; left:6px; width:6px; height:10px; background:rgba(255,255,255,0.3); border-radius:50%; transform:rotate(-15deg); }
+.soil-particle { position:absolute; bottom:-5px; width:6px; height:6px; background:#5d3a1a; border-radius:50%; animation: float-particle 2s ease-out infinite; opacity:0; }
+.soil-particle:nth-child(3) { left:30%; }
+.soil-particle:nth-child(4) { left:50%; }
+.soil-particle:nth-child(5) { left:70%; }
+
+/* Stage 2: Sprout */
+.sprout-container { position:relative; width:60px; height:80px; }
+.soil-mound { position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:50px; height:15px; background:#5d3a1a; border-radius:50% 50% 30% 30%; box-shadow:0 4px 6px rgba(0,0,0,0.2); }
+.sprout-stem { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); width:4px; height:40px; background:linear-gradient(to top,#4caf50,#8bc34a); border-radius:2px; transform-origin:bottom; animation:aura-grow 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards; box-shadow:0 0 10px rgba(76,175,80,0.3); }
+.stem-glow { position:absolute; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent); }
+.sprout-leaves { position:absolute; bottom:40px; left:50%; transform:translateX(-50%); width:30px; height:30px; }
+.leaf { position:absolute; width:15px; height:15px; background:linear-gradient(135deg,#4caf50,#81c784); border-radius:100% 0 100% 0; transform-origin:center bottom; }
+.leaf.left { left:-8px; transform:rotate(-45deg); animation:leaf-rustle 3s ease-in-out infinite; }
+.leaf.right { right:-8px; transform:rotate(45deg); animation:leaf-rustle 3s ease-in-out infinite reverse; }
+.morning-dew { position:absolute; top:20px; left:20px; width:4px; height:4px; background:rgba(255,255,255,0.9); border-radius:50%; animation:dew-glisten 2s ease-in-out infinite; box-shadow:0 0 5px rgba(255,255,255,0.5); }
+
+/* Stage 3: Young Tree */
+.young-tree-container { position:relative; width:80px; height:100px; }
+.root-system { position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:100%; height:20px; }
+.root { position:absolute; bottom:0; width:4px; height:15px; background:#8b5a2b; border-radius:2px; transform-origin:bottom; animation:root-grow 0.6s ease-out forwards; opacity:0.6; }
+.root:nth-child(1) { left:40%; }
+.root:nth-child(2) { left:45%; transform:rotate(-5deg); }
+.root:nth-child(3) { left:50%; transform:rotate(5deg); }
+.tree-trunk { position:absolute; bottom:5px; left:50%; transform:translateX(-50%); background:linear-gradient(to right,#8b5a2b,#a8753a,#8b5a2b); border-radius:4px 4px 2px 2px; overflow:hidden; }
+.tree-trunk.stage-3 { width:12px; height:45px; }
+.bark-texture { position:absolute; top:0; left:0; width:100%; height:100%; background:repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px); }
+.canopy { position:absolute; bottom:45px; left:50%; transform:translateX(-50%); }
+.canopy.stage-3 { width:50px; height:40px; }
+.branch { position:absolute; bottom:0; }
+.branch.left { left:-10px; transform:rotate(-30deg); }
+.branch.right { right:-10px; transform:rotate(30deg); }
+.branch.center { left:50%; transform:translateX(-50%) rotate(0deg); bottom:10px; }
+.leaf-cluster { position:relative; width:30px; height:30px; }
+.leaf-detail { position:absolute; width:12px; height:12px; background:linear-gradient(135deg,#66bb6a,#43a047); border-radius:100% 0 100% 0; }
+.leaf-detail:nth-child(1) { top:0; left:5px; transform:rotate(-15deg); }
+.leaf-detail:nth-child(2) { top:8px; left:0; transform:rotate(5deg); }
+.leaf-detail:nth-child(3) { top:8px; right:0; transform:rotate(-5deg); }
+
+/* Stage 4: Sapling */
+.sapling-container { position:relative; width:100px; height:130px; }
+.tree-trunk.stage-4 { width:16px; height:60px; }
+.knot { position:absolute; top:30%; left:2px; width:4px; height:4px; background:#5d3a1a; border-radius:50%; box-shadow:0 0 2px rgba(0,0,0,0.3); }
+.canopy.stage-4 { bottom:60px; width:70px; height:50px; }
+.branch.primary { position:absolute; bottom:0; }
+.branch.primary.left { left:-20px; transform:rotate(-35deg); }
+.branch.primary.right { right:-20px; transform:rotate(35deg); }
+.branch.primary.top { left:50%; transform:translateX(-50%) rotate(0deg); bottom:15px; }
+.sub-branch { position:absolute; width:3px; height:15px; background:#8b5a2b; transform-origin:bottom; }
+.branch.primary.left .sub-branch { left:10px; top:-5px; transform:rotate(20deg); }
+.branch.primary.right .sub-branch { right:10px; top:-5px; transform:rotate(-20deg); }
+.leaf-group { position:relative; width:100%; height:100%; }
+.leaf-group .leaf { width:10px; height:10px; }
+.floating-pollen { position:absolute; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at 30% 30%, rgba(255,235,59,0.2), transparent); animation:float-particle 4s ease-out infinite; pointer-events:none; }
+
+/* Stage 5: Full Tree */
+.full-tree-container { position:relative; width:120px; height:150px; }
+.root-system.elaborate { height:30px; }
+.root.major { width:6px; height:25px; }
+.root.minor { width:3px; height:15px; }
+.tree-trunk.stage-5 { width:24px; height:80px; }
+.bark-texture.dense { background:repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 6px); }
+.moss-patch { position:absolute; bottom:10px; right:2px; width:8px; height:4px; background:#2e7d32; border-radius:40% 40% 20% 20%; opacity:0.6; filter:blur(1px); }
+.canopy.stage-5 { bottom:80px; width:100px; height:70px; }
+.branch.major { position:absolute; bottom:0; }
+.branch.major.left { left:-30px; transform:rotate(-40deg); }
+.branch.major.right { right:-30px; transform:rotate(40deg); }
+.branch.major.top { left:50%; transform:translateX(-50%) rotate(0deg); bottom:25px; }
+.branch.minor { position:absolute; width:4px; height:20px; background:#8b5a2b; transform-origin:bottom; }
+.branch.minor.back { left:0; bottom:40px; transform:rotate(-10deg); opacity:0.7; }
+.branch.minor.front { right:0; bottom:50px; transform:rotate(10deg); opacity:0.7; }
+.leaf-cluster.large { width:50px; height:40px; }
+.leaf-cluster.large .leaf { width:12px; height:12px; background:linear-gradient(135deg,#66bb6a,#2e7d32); animation:leaf-rustle 3s ease-in-out infinite; }
+.falling-leaf { position:absolute; top:-10px; left:20%; width:6px; height:6px; background:#ffb74d; border-radius:100% 0 100% 0; transform:rotate(45deg); animation:float-particle 3s linear infinite; opacity:0; }
+
+/* Transition effects */
+.tree-stage.transitioning { filter:brightness(1.1); transform:scale(1.02); }
+
 }
